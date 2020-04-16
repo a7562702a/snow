@@ -1,0 +1,94 @@
+create sequence cb_list_seq 
+increment by 1 --increase 1 everytime
+start with 1   --star from 1
+nomaxvalue     --not max
+nocycle        --not loop
+
+alter table cbreply drop constraint cb_list_sabun_fk;
+
+alter table cb_reply add constraint cb_list_sabun_fk
+foreign key(sabun)references cb_list(sabun)on delete cascade;
+
+
+
+======================================================================
+create table cb_list(
+sabun number(8) not null,     *******
+name varchar2(10) not null,
+seasons varchar2(10) not null,
+content varchar2(200) not null,
+wdate date not null,
+hit number(10) not null,
+size1 number(20) not null,
+file1 varchar2(20) not null,
+pay number(8) not null,
+primary key(sabun)
+)
+====================================================================
+create table cb_reply(
+num number(8) not null,               *********
+writer varchar2(10) not null,
+content varchar2(200) not null,
+sabun number(8) not null,
+primary key(sabun)
+)
+======================================================================
+
+====================================================================
+
+create table cbnews (  ----------notice board table 
+n_no number(8)not null,
+n_sabun number(8) not null,
+n_name varchar2(8) not null,
+n_seasons varchar2(10) not null,
+n_content varchar2(500) not null,
+n_date date not null,
+n_hit number(8) not null,
+n_size number(50) not null,
+n_file number(50) not null
+)
+
+=====================================================================
+
+create table qalist(  -----Q&A table 
+q_sabun number(8) not null,
+q_title varchar2(8) not null,
+q_content varchar2(8) not null,
+q_date date not null,
+q_hit number(8) not null,
+q_no number(8) not null,
+primary key(q_sabun)
+)
+
+======================================================================
+create table qareply(------------Q&A reply table
+q_no number(8) not null, -----fk
+qr_writer varchar2(10) not null,
+qr_content varchar2(500) not null,
+qr_date date not null,
+qr_hit number(8) not null
+)
+
+======================================================================
+
+create table cbuser(
+sabun number(8) not null,
+userid varchar2(20) not null, 
+pwd varchar2(10) not null,
+phone varchar2(20) not null,
+wdate date not null,
+address1 varchar2(20) not null,
+address2 varchar2(60) not null,
+email varchar2(40) ,
+file1 varchar2(20) not null,
+size1 number(8) not null,
+primary key(sabun)
+)
+======================================================================
+create table yylist(
+sabun number(8) not null,
+time varchar2(20) not null,
+pay number(10) not null,
+wdate varchar2(20) not null
+)
+
