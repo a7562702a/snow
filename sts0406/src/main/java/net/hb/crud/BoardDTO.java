@@ -2,6 +2,7 @@ package net.hb.crud;
 
 import org.springframework.web.multipart.MultipartFile;
 
+
 public class BoardDTO {
   private int hobby_idx;
   private String name,title,content,gender,hobby;
