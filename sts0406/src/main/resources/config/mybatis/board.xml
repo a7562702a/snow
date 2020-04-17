@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="board">	
+
+<!-- 	<insert id="add"  parameterType="net.hb.crud.BoardDTO">    -->
+<!-- 	  insert into guest -->
+<!-- 	  values(#{sabun}, #{name}, #{title}, sysdate ,#{pay}, 0, #{email} ) -->
+<!-- 	</insert> -->
+	
+<!-- 	<select id="selectAll"  resultType="net.hb.crud.BoardDTO"> -->
+<!-- 	  select * from guest order by sabun   -->
+<!-- 	</select> -->
+	
+<!-- 	<select id="countAll"  resultType="int"> -->
+<!-- 		select count(*) from guest  -->
+<!-- 	</select> -->
+	
+<!-- 	<select id="detail" parameterType="int"  resultType="net.hb.crud.BoardDTO">  -->
+<!-- 		select * from guest where sabun = #{data}  -->
+<!-- 	</select> -->
+	
+<!-- 	<delete id="del" parameterType="int"> -->
+<!-- 		delete from guest where sabun = #{data} -->
+<!-- 	</delete> -->
+	
+<!-- 	<update id="edit" parameterType="net.hb.crud.BoardDTO" > -->
+<!-- 	    update guest set name=#{name} , title=#{title} , wdate=sysdate , pay=#{pay} ,hit=0 , email=#{email} where sabun=#{sabun} -->
+<!-- 	</update> -->
+	
+	<insert id="add">
+	    insert into hobby values(
+	    hobby_seq.nextval,#{name},#{title},#{content},#{gender},#{hobby},#{img_file_name}
+	    )
+	</insert>
+	
+	<select id="selectAll" resultType="net.hb.crud.BoardDTO" parameterType="net.hb.crud.BoardDTO">
+	   select*from(
+	    select rownum rn, a.*, (select count(*) from hobby_reply r where 
+        r.hobby_idx=a.hobby_idx ) as rcnt  from 
+       (select * from hobby where  ${skey} like '%'  ||  #{sval} || '%' order by hobby_idx desc) a
+	    )where rn between #{start} and #{end}
+	</select>
+	
+	<select id="selectAll123" parameterType="net.hb.crud.BoardDTO" resultType="net.hb.crud.BoardDTO">
+     select * from ( 
+       select rownum rn, a.*, (select count(*) from hobby_reply r where 
+        r.hobby_idx=a.hobby_idx ) as rcnt  from 
+       (select * from hobby where  ${skey} like '%'  ||  #{sval} || '%' ) a 
+       ) where rn between  #{start}   and  #{end} 
+    </select>
+	
+	<select id="countAll" resultType="int" parameterType="net.hb.crud.BoardDTO">
+	    select count(*) from hobby where ${skey} like '%'  ||  #{sval} || '%'
+	</select>
+	
+	<select id="countAll1" resultType="int" >
+	    select count(*) from hobby 
+	</select>
+	
+	<select id="detail" resultType="net.hb.crud.BoardDTO" parameterType="int">
+	    select *from hobby where hobby_idx=#{data}
+	</select>
+	
+	<delete id="del" parameterType="int">
+	    delete from hobby where hobby_idx=#{data}
+	</delete>
+	
+	<update id="edit" parameterType="net.hb.crud.BoardDTO"  >
+	 update hobby set name=#{name}, title=#{title}, content=#{content}, 
+     gender=#{gender}, hobby=#{hobby}, img_file_name=#{img_file_name}
+     where hobby_idx=#{hobby_idx}
+	
+	</update>
+	
+	<select id="selectAll789"  resultType="net.hb.crud.BoardDTO" parameterType="net.hb.crud.BoardDTO">
+       select * from (
+       select  rownum as rn, h.* from  (
+ 	   select * from hobby 		
+	<if test="skey != null">
+		<if test="skey == 'name'">
+			where name like '%' || #{sval} || '%'
+		</if>
+		<if test="skey == 'title'">
+			where title like '%' || #{sval} || '%'
+		</if>
+		<if test="skey == 'content'">
+			where content like '%' || #{sval} || '%'
+		</if>
+	 </if>
+		
+      order by hobby_idx desc
+    ) h
+  ) where rn between #{start} and  #{end}
+    </select>	
+	
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
